@@ -21,7 +21,7 @@
           <Submenu :name="`sub${item.name}`" v-if="item.children" :key="`sub${item.name}`">
             <template slot="title">
                 <Icon type="stats-bars"></Icon>
-                {{item.meta.title}}-{{item.name}}
+                {{item.meta.title}}
             </template>
             <MenuItem v-for="child in item.children" :name="child.name" :key="child.name">{{child.meta.title}}</MenuItem>
           </Submenu>
@@ -59,21 +59,28 @@ export default {
       routeLists: this.$router.options.routes, // 路由列表
       sideRouteLists: [], // 侧边栏路由
       acitveFlag: '', // 侧边栏激活变量
-      openNames: [] // 展开Submenu集合
+      openNames: [], // 展开Submenu集合
+      oldName: ''
     }
   },
+  // beforeRouteEnter: (to, from, next) => {
+  //   console.log(123, to)
+  //   next()
+  // },
   created () {
     this.acitveFlag = this.$route.name
     console.log(1, this.$route)
     this.init()
   },
-  beforeRouteEnter (to, from, next) {
-    console.log(99, to)
-    next()
-  },
   methods: {
     menuChange (name) {
       let primary = {}
+      if (this.oldName === name) return
+      this.oldName = name
+      console.log(332, this.$route)
+      this.$nextTick(() => {
+        console.log(3311112, this.$route)
+      })
       this.routeFilter(name)
       if (this.sideRouteLists.length > 0) { // 如果不是一级目录跳到第一个子元素 第一个子元素可能还有子目录
         primary = this.sideRouteLists[0]
@@ -81,11 +88,16 @@ export default {
         if (primary.children && primary.children.length > 0) {
           this.acitveFlag = primary.children[0].name
         }
-        console.log(11333, this.openNames)
         this.$router.push({name: this.acitveFlag})
-        this.$nextTick(() => { // 解决切换时不生效问题
-          this.$refs.side.updateActiveName()
-        })
+        setTimeout(() => {
+          let matchedName = this.$route.matched
+          console.log(12300, matchedName)
+          this.openNames = [`sub${matchedName[1].name}`]
+          this.$nextTick(() => {
+            this.$refs.side.updateActiveName()
+            this.$refs.side.updateOpened()
+          })
+        }, 50)
       } else {
         this.$router.push({name: name})
       }
@@ -96,9 +108,10 @@ export default {
     init () {
       let matchedName = this.$route.matched
       this.routeFilter(matchedName[0].name)
-      if (matchedName.length === 3) { // 三级菜单
-        this.openNames = [`sub${matchedName[1].name}`]
-      }
+      // if (matchedName.length === 3) { // 三级菜单
+      //   this.openNames = [`sub${matchedName[1].name}`]
+      // }
+      this.setOpened()
     },
     routeFilter (name) { // 获取侧边栏路由
       this.routeLists.filter((item) => {
@@ -106,6 +119,17 @@ export default {
           this.sideRouteLists = item.children ? item.children : []
         }
       })
+    },
+    setOpened () {
+      let matchedName = this.$route.matched
+      // debugger
+      console.log(752, matchedName)
+      if (matchedName.length === 3) { // 三级菜单
+        this.openNames = [`sub${matchedName[1].name}`]
+        this.$nextTick(() => {
+          this.$refs.side.updateOpened()
+        })
+      }
     }
   }
 }

@@ -38,6 +38,31 @@ export default new Router({
       ]
     },
     {
+      path: '/second1',
+      name: 'second1',
+      meta: { title: '二级菜单11' },
+      icon: 'gear-a',
+      component: () => import('@/views/layout/home'),
+      children: [
+        {
+          path: 'second1-list',
+          name: 'secondList1',
+          meta: { title: '列表12' },
+          icon: 'gear-a',
+          component: () => import('@/views/layout/content'),
+          children: [
+            {
+              path: 'second-list2',
+              name: 'secondList3',
+              meta: { title: '列表33' },
+              icon: 'gear-a',
+              component: () => import('@/views/order/list')
+            }
+          ]
+        }
+      ]
+    },
+    {
       path: '/order',
       name: 'order',
       meta: { title: '订单管理' },
