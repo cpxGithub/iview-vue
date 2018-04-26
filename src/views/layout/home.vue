@@ -1,0 +1,138 @@
+<template>
+  <div class="home-container">
+    <!-- 顶部导航栏 -->
+    <nav class="top-bar">
+      <div class="top-info">内容</div>
+      <div class="nav-bar">
+        <Menu mode="horizontal" theme="primary" :active-name="$route.matched[0].name" @on-select="menuChange">
+          <MenuItem v-for="route in $router.options.routes" :key="route.name" :name="route.name">
+            <Icon :type="route.icon"></Icon>
+              {{route.meta.title}}
+          </MenuItem>
+        </Menu>
+      </div>
+    </nav>
+    <!-- 侧边栏与内容区 -->
+    <div class="bottom-content" v-if="sideRouteLists.length">
+      <!-- 侧边栏 -->
+      <Menu :active-name="acitveFlag" :open-names="openNames" @on-select="sideChange" ref="side">
+        <template v-for="item in sideRouteLists">
+          <MenuItem :name="item.name" :key="item.name" v-if="!item.children">{{item.meta.title}}</MenuItem>
+          <Submenu :name="`sub${item.name}`" v-if="item.children" :key="`sub${item.name}`">
+            <template slot="title">
+                <Icon type="stats-bars"></Icon>
+                {{item.meta.title}}-{{item.name}}
+            </template>
+            <MenuItem v-for="child in item.children" :name="child.name" :key="child.name">{{child.meta.title}}</MenuItem>
+          </Submenu>
+        </template>
+      </Menu>
+      <!-- <Menu class="side-bar" :active-name="$route.name" @on-select="sideChange" ref="side">
+        <template v-for="(item, index) in sideRouteLists" v-if="!item.children">
+          <MenuItem :key="index" :name="item.name">
+            <Icon :type="item.icon" :key="index"></Icon>
+              {{item.meta.title}}-{{item.name}}
+          </MenuItem> -->
+          <!-- <Submenu :key="`sub${index}`" :name="item.name" v-if="item.children && item.children.length > 0">
+            <template slot="title">
+                <Icon type="ios-people"></Icon>
+                {{item.meta.title}}
+            </template>
+            <MenuItem v-for="child in item.children" :name="child.name" :key="child.name">{{child.meta.title}}</MenuItem>
+          </Submenu> -->
+        <!-- </template> -->
+      <!-- </Menu> -->
+      <!-- 内容区 -->
+      <div class="content">
+        <router-view />
+      </div>
+    </div>
+    <div v-else>
+      这是一级内容
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      routeLists: this.$router.options.routes, // 路由列表
+      sideRouteLists: [], // 侧边栏路由
+      acitveFlag: '', // 侧边栏激活变量
+      openNames: [] // 展开Submenu集合
+    }
+  },
+  created () {
+    this.acitveFlag = this.$route.name
+    console.log(1, this.$route)
+    this.init()
+  },
+  beforeRouteEnter (to, from, next) {
+    console.log(99, to)
+    next()
+  },
+  methods: {
+    menuChange (name) {
+      let primary = {}
+      this.routeFilter(name)
+      if (this.sideRouteLists.length > 0) { // 如果不是一级目录跳到第一个子元素 第一个子元素可能还有子目录
+        primary = this.sideRouteLists[0]
+        this.acitveFlag = primary.name
+        if (primary.children && primary.children.length > 0) {
+          this.acitveFlag = primary.children[0].name
+        }
+        console.log(11333, this.openNames)
+        this.$router.push({name: this.acitveFlag})
+        this.$nextTick(() => { // 解决切换时不生效问题
+          this.$refs.side.updateActiveName()
+        })
+      } else {
+        this.$router.push({name: name})
+      }
+    },
+    sideChange (name) {
+      this.$router.push({name: name})
+    },
+    init () {
+      let matchedName = this.$route.matched
+      this.routeFilter(matchedName[0].name)
+      if (matchedName.length === 3) { // 三级菜单
+        this.openNames = [`sub${matchedName[1].name}`]
+      }
+    },
+    routeFilter (name) { // 获取侧边栏路由
+      this.routeLists.filter((item) => {
+        if (item.name === name) {
+          this.sideRouteLists = item.children ? item.children : []
+        }
+      })
+    }
+  }
+}
+</script>
+<style lang="less" scoped>
+.top-bar {
+  display: flex;
+  .top-info {
+    width: 240px;
+    background: #2d8cf0;
+    color: #fff;
+  }
+  .nav-bar {
+    flex: 1;
+  }
+}
+.bottom-content {
+  display: flex;
+  .side-bar {
+    width: 240px;
+    height: 100%;
+    overflow-y: auto;
+  }
+  .content {
+    height: 100%;
+    flex: 1;
+    overflow-y: auto;
+  }
+}
+</style>
