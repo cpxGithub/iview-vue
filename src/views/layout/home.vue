@@ -44,6 +44,7 @@
       <!-- </Menu> -->
       <!-- 内容区 -->
       <div class="content">
+        mianb
         <router-view />
       </div>
     </div>
@@ -78,9 +79,6 @@ export default {
       if (this.oldName === name) return
       this.oldName = name
       console.log(332, this.$route)
-      this.$nextTick(() => {
-        console.log(3311112, this.$route)
-      })
       this.routeFilter(name)
       if (this.sideRouteLists.length > 0) { // 如果不是一级目录跳到第一个子元素 第一个子元素可能还有子目录
         primary = this.sideRouteLists[0]
@@ -88,16 +86,25 @@ export default {
         if (primary.children && primary.children.length > 0) {
           this.acitveFlag = primary.children[0].name
         }
-        this.$router.push({name: this.acitveFlag})
-        setTimeout(() => {
-          let matchedName = this.$route.matched
-          console.log(12300, matchedName)
-          this.openNames = [`sub${matchedName[1].name}`]
+        this.$router.push({name: this.acitveFlag}, (route) => {
+          console.log(33, this.$route.matched)
+          // console.log(a)
           this.$nextTick(() => {
             this.$refs.side.updateActiveName()
+          })
+          this.openNames = [`sub${route.matched[1].name}`]
+          this.$nextTick(() => {
             this.$refs.side.updateOpened()
           })
-        }, 50)
+        })
+        // setTimeout(() => {
+        //   let matchedName = this.$route.matched
+        //   console.log(12300, matchedName)
+        //   this.openNames = [`sub${matchedName[1].name}`]
+        //   this.$nextTick(() => {
+        //     this.$refs.side.updateOpened()
+        //   })
+        // }, 50)
       } else {
         this.$router.push({name: name})
       }
@@ -108,10 +115,61 @@ export default {
     init () {
       let matchedName = this.$route.matched
       this.routeFilter(matchedName[0].name)
-      // if (matchedName.length === 3) { // 三级菜单
-      //   this.openNames = [`sub${matchedName[1].name}`]
-      // }
-      this.setOpened()
+      let primary = ''
+      switch (matchedName.length) {
+        case 1: // 一级目录
+          if (this.sideRouteLists.length > 0) {
+            primary = this.sideRouteLists[0]
+            this.acitveFlag = primary.name
+            if (primary.children && primary.children.length > 0) {
+              this.acitveFlag = primary.children[0].name
+            }
+            this.$router.push({name: this.acitveFlag}, (route) => {
+              this.openNames = [`sub${route.matched[1].name}`]
+              this.$nextTick(() => {
+                this.$refs.side.updateOpened()
+              })
+            })
+            // setTimeout(() => {
+            //   let matchedName = this.$route.matched
+            //   console.log(11, matchedName)
+            //   this.openNames = [`sub${matchedName[1].name}`]
+            //   this.$nextTick(() => {
+            //     this.$refs.side.updateOpened()
+            //   })
+            // }, 500)
+          }
+          break
+        case 2: // 二级目录
+          if (this.sideRouteLists.length > 0) {
+            primary = this.sideRouteLists[0]
+            this.acitveFlag = primary.name
+            if (primary.children && primary.children.length > 0) {
+              this.acitveFlag = primary.children[0].name
+            }
+            this.$router.push({name: this.acitveFlag}, (route) => {
+              this.openNames = [`sub${route.matched[1].name}`]
+              this.$nextTick(() => {
+                this.$refs.side.updateOpened()
+              })
+            })
+            // setTimeout(() => {
+            //   let matchedName = this.$route.matched
+            //   this.openNames = [`sub${matchedName[1].name}`]
+            //   this.$nextTick(() => {
+            //     this.$refs.side.updateOpened()
+            //   })
+            // }, 500)
+          }
+          break
+        case 3: // 三级目录
+          if (matchedName.length === 3) { // 三级菜单
+            this.openNames = [`sub${matchedName[1].name}`]
+          }
+          break
+      }
+      console.log(1100, matchedName)
+      // this.setOpened()
     },
     routeFilter (name) { // 获取侧边栏路由
       this.routeLists.filter((item) => {
