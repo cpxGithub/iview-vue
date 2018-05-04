@@ -5,7 +5,7 @@
       <div class="top-info">内容</div>
       <div class="nav-bar">
         <Menu mode="horizontal" theme="primary" :active-name="$route.matched[0].name" @on-select="menuChange">
-          <MenuItem v-for="route in $router.options.routes" :key="route.name" :name="route.name">
+          <MenuItem v-for="route in $router.options.routes" :key="route.name" :name="route.name" v-if="!route.hidden">
             <Icon :type="route.icon"></Icon>
               {{route.meta.title}}
           </MenuItem>
