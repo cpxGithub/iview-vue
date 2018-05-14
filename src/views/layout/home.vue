@@ -15,7 +15,7 @@
     <!-- 侧边栏与内容区 -->
     <div class="bottom-content" v-if="sideRouteLists.length">
       <!-- 侧边栏 -->
-      <Menu :active-name="acitveFlag" :open-names="openNames" @on-select="sideChange" ref="side">
+      <Menu :active-name="acitveFlag" :open-names="openNames" @on-select="sideChange" ref="side" class="side-bar">
         <template v-for="item in sideRouteLists">
           <MenuItem :name="item.name" :key="item.name" v-if="!item.children">{{item.meta.title}}</MenuItem>
           <Submenu :name="`sub${item.name}`" v-if="item.children" :key="`sub${item.name}`">
@@ -207,8 +207,7 @@ export default {
 .bottom-content {
   display: flex;
   .side-bar {
-    width: 240px;
-    height: 100%;
+    padding-bottom: 60px;
     overflow-y: auto;
   }
   .content {
