@@ -11,6 +11,7 @@
   </div>
 </template>
 <script>
+import { fetchLogin } from 'api/login'
 export default {
   data () {
     return {
@@ -18,6 +19,13 @@ export default {
         username: '',
         password: ''
       }
+    }
+  },
+  async created () {
+    try {
+      await fetchLogin({username: 1, password: 55})
+    } catch (data) {
+      console.log(53, data)
     }
   }
 }

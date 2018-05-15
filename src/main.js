@@ -19,14 +19,14 @@ let router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to)
   common.setTitle(to.meta.title)
   next()
 })
 
 /* eslint-disable no-new */
-new Vue({
+const app = new Vue({
   router,
   components: { App },
   template: '<App/>'
 }).$mount('#app')
+window.ra = app.$router

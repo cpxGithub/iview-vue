@@ -70,7 +70,7 @@ export default {
   // },
   created () {
     this.acitveFlag = this.$route.name
-    console.log(1, this.$route)
+    // console.log(1, this.$route)
     this.init()
   },
   methods: {
@@ -78,7 +78,7 @@ export default {
       let primary = {}
       if (this.oldName === name) return
       this.oldName = name
-      console.log(332, this.$route)
+      // console.log(332, this.$route)
       this.routeFilter(name)
       if (this.sideRouteLists.length > 0) { // 如果不是一级目录跳到第一个子元素 第一个子元素可能还有子目录
         primary = this.sideRouteLists[0]
@@ -87,7 +87,7 @@ export default {
           this.acitveFlag = primary.children[0].name
         }
         this.$router.push({name: this.acitveFlag}, (route) => {
-          console.log(33, this.$route.matched)
+          // console.log(33, this.$route.matched)
           // console.log(a)
           this.$nextTick(() => {
             this.$refs.side.updateActiveName()
@@ -168,7 +168,7 @@ export default {
           }
           break
       }
-      console.log(1100, matchedName)
+      // console.log(1100, matchedName)
       // this.setOpened()
     },
     routeFilter (name) { // 获取侧边栏路由
@@ -181,7 +181,7 @@ export default {
     setOpened () {
       let matchedName = this.$route.matched
       // debugger
-      console.log(752, matchedName)
+      // console.log(752, matchedName)
       if (matchedName.length === 3) { // 三级菜单
         this.openNames = [`sub${matchedName[1].name}`]
         this.$nextTick(() => {
@@ -214,6 +214,7 @@ export default {
     height: 100%;
     flex: 1;
     overflow-y: auto;
+    padding: 0 10px;
   }
 }
 </style>
