@@ -8,6 +8,7 @@ import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import '@/assets/style/common.css'
 import common from '@/utils/common'
+import '../mock/index'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)

@@ -143,16 +143,17 @@ export default {
         case 2: // 二级目录
           if (this.sideRouteLists.length > 0) {
             primary = this.sideRouteLists[0]
-            this.acitveFlag = primary.name
+            // debugger
+            this.acitveFlag = matchedName[1].name
             if (primary.children && primary.children.length > 0) {
-              this.acitveFlag = primary.children[0].name
+              // this.acitveFlag = primary.children[0].name
             }
-            this.$router.push({name: this.acitveFlag}, (route) => {
-              this.openNames = [`sub${route.matched[1].name}`]
-              this.$nextTick(() => {
-                this.$refs.side.updateOpened()
-              })
-            })
+            // this.$router.push({name: this.acitveFlag}, (route) => {
+            //   this.openNames = [`sub${route.matched[1].name}`]
+            // })
+            // this.$nextTick(() => {
+            //   this.$refs.side.updateActiveName()
+            // })
             // setTimeout(() => {
             //   let matchedName = this.$route.matched
             //   this.openNames = [`sub${matchedName[1].name}`]

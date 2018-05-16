@@ -4,6 +4,8 @@
   </div>
 </template>
 <script>
+import { fetchOrderList } from 'api/order/index'
+import axios from 'axios'
 export default {
   data () {
     return {
@@ -29,7 +31,7 @@ export default {
       }, {
         title: '操作',
         key: 'action',
-        render: function (h, { row }) {
+        render: (h, { row }) => {
           return h('div', {
             attrs: {
               class: 'btn-box'
@@ -37,7 +39,7 @@ export default {
           }, [
             h('span', {
               on: {
-                click: function () {
+                click: () => {
                   console.log(123, this)
                 }
               }
@@ -48,6 +50,12 @@ export default {
     }
   },
   created () {
+    fetchOrderList().then(res => {
+      this.lists = res.lists
+    })
+    axios.get('/api/order-list').then(res => {
+      console.log(res)
+    })
     console.log(1)
   }
 }

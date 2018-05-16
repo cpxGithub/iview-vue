@@ -31,8 +31,9 @@ export default (type = 'get', url, params) => {
       return reject(error)
     })
     axios(config).then(res => {
-      if (res.data) reject(res.data)
-      else resolve(res.data)
+      // if (res.data) reject(res.data)
+      // else resolve(res.data)
+      resolve(res.data)
       console.log(1235, res)
     }).catch(data => {
       console.log(963, data)
