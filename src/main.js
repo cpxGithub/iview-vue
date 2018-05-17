@@ -8,12 +8,14 @@ import iView from 'iview'
 import 'iview/dist/styles/iview.css'
 import '@/assets/style/common.css'
 import common from '@/utils/common'
-import '../mock/index'
+if (process.env.NODE_ENV === 'development') {
+  require('../mock/index')
+}
 
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(iView)
-
+console.log(process.env)
 let router = new VueRouter({
   mode: 'history',
   routes

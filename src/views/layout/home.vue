@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
     <!-- 顶部导航栏 -->
-    <nav class="top-bar">
+    <div class="top-bar">
       <div class="top-info">内容</div>
       <div class="nav-bar">
         <Menu mode="horizontal" theme="primary" :active-name="$route.matched[0].name" @on-select="menuChange">
@@ -11,19 +11,80 @@
           </MenuItem>
         </Menu>
       </div>
-    </nav>
+    </div>
     <!-- 侧边栏与内容区 -->
-    <div class="bottom-content" v-if="sideRouteLists.length">
+    <div class="bottom-content" v-if="sideRouteLists.length > 0">
       <!-- 侧边栏 -->
+      <!-- <div class="side-bar">
+        <div>
+          <div>111</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>100</div>
+        </div>
+      </div> -->
       <Menu :active-name="acitveFlag" :open-names="openNames" @on-select="sideChange" ref="side" class="side-bar">
         <template v-for="item in sideRouteLists">
-          <MenuItem :name="item.name" :key="item.name" v-if="!item.children">{{item.meta.title}}</MenuItem>
+          <MenuItem :name="item.name" :key="item.name" v-if="!item.children && !item.hidden"><Icon :type="item.icon" :key="item.name"></Icon>{{item.meta.title}}</MenuItem>
           <Submenu :name="`sub${item.name}`" v-if="item.children" :key="`sub${item.name}`">
             <template slot="title">
-                <Icon type="stats-bars"></Icon>
-                {{item.meta.title}}
+              <Icon :type="item.icon"></Icon>
+              {{item.meta.title}}
             </template>
-            <MenuItem v-for="child in item.children" :name="child.name" :key="child.name">{{child.meta.title}}</MenuItem>
+            <MenuItem v-for="child in item.children" :name="child.name" :key="child.name" v-if="!child.hidden">{{child.meta.title}}</MenuItem>
           </Submenu>
         </template>
       </Menu>
@@ -42,13 +103,14 @@
           </Submenu> -->
         <!-- </template> -->
       <!-- </Menu> -->
+
       <!-- 内容区 -->
       <div class="content">
         mianb
         <router-view />
       </div>
     </div>
-    <div v-else>
+    <div class="home-content" v-else>
       这是一级内容
     </div>
   </div>
@@ -195,6 +257,10 @@ export default {
 </script>
 <style lang="less" scoped>
 .top-bar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 100;
   display: flex;
   .top-info {
     width: 240px;
@@ -206,16 +272,31 @@ export default {
   }
 }
 .bottom-content {
-  display: flex;
+  position: static;
+  z-index: 1;
+  overflow-x: hidden;
   .side-bar {
-    padding-bottom: 60px;
+    width: 240px;
+    position: fixed;
+    z-index: 10;
+    top: 61px;
+    left: 0;
+    bottom: 0;
+    overflow-x: hidden;
     overflow-y: auto;
   }
   .content {
-    height: 100%;
-    flex: 1;
-    overflow-y: auto;
+    // position: relative;
+    // height: 100%;
+    // flex: 1;
+    margin-top: 60px;
+    margin-left: 240px;
+    // top: 61px;
+    // overflow-y: auto;
     padding: 0 10px;
   }
+}
+.home-content {
+  margin-top: 60px;
 }
 </style>

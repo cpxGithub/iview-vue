@@ -18,48 +18,79 @@ export default [
   {
     path: '/index',
     name: 'index',
-    meta: { title: '首页' },
-    icon: 'gear-a',
+    meta: { title: '主页' },
+    icon: 'home',
     component: () => import('views/layout/home')
   },
   {
-    path: '/second',
-    name: 'second',
-    meta: { title: '二级菜单' },
-    icon: 'gear-a',
+    path: '/customer',
+    name: 'customer',
+    meta: { title: '客户' },
+    icon: 'person-stalker',
     component: () => import('views/layout/home'),
     children: [
       {
-        path: 'second-list',
-        name: 'secondList',
-        meta: { title: '列表' },
-        icon: 'gear-a',
-        component: () => import('views/order/list')
+        path: 'lists',
+        name: 'customerLists',
+        meta: { title: '客户列表' },
+        icon: 'android-list',
+        component: () => import('views/customer/lists')
+      },
+      {
+        path: 'detail',
+        name: 'customerDetail',
+        hidden: true,
+        meta: { title: '客户详情' },
+        component: () => import('views/customer/detail')
+      },
+      {
+        path: 'activity',
+        name: 'customerCtivity',
+        meta: { title: '营销活动' },
+        icon: 'stats-bars',
+        component: () => import('views/layout/content'),
+        children: [
+          {
+            path: 'lists',
+            name: 'activityLists',
+            meta: { title: '客户营销活动列表' },
+            component: () => import('views/customer/activityLists')
+          },
+          {
+            path: 'detail',
+            name: 'activityDetail',
+            meta: { title: '活动详情' },
+            component: () => import('views/customer/activityDetail')
+          }
+        ]
       }
     ]
   },
   {
-    path: '/second1',
-    name: 'second1',
-    meta: { title: '二级菜单11' },
-    icon: 'gear-a',
+    path: '/goods-manage',
+    name: 'goodsManage',
+    meta: { title: '商品管理' },
+    icon: 'android-folder',
     component: () => import('views/layout/home'),
     children: [
       {
-        path: 'second1-list',
-        name: 'secondList1',
-        meta: { title: '列表12' },
-        icon: 'gear-a',
-        component: () => import('views/layout/content'),
-        children: [
-          {
-            path: 'second-list2',
-            name: 'secondList3',
-            meta: { title: '列表33' },
-            icon: 'gear-a',
-            component: () => import('views/order/list')
-          }
-        ]
+        path: 'goods-lists',
+        name: 'goodsLists',
+        meta: { title: '商品列表' },
+        icon: 'android-list',
+        component: () => import('views/goods/lists')
+      },
+      {
+        path: 'goods-detail',
+        name: 'goodsDetail',
+        meta: { title: '商品详情' },
+        component: () => import('views/goods/detail')
+      },
+      {
+        path: 'goods-add',
+        name: 'goodsAdd',
+        meta: { title: '商品列表' },
+        component: () => import('views/goods/add')
       }
     ]
   },
