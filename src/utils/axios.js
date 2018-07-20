@@ -16,14 +16,14 @@ export default (type = 'get', url, params) => {
     }
     axios.interceptors.response.use((response) => {
       console.log(10, response)
-      switch (response.data.code) {
+      switch (response.data.code) { // 根据不同错误码，处理对应业务
         case 0:
           break
         case 10:
-          window.ra.push('second1')
+          // 业务
           break
         default:
-          console.log('cuowu')
+          console.log('cuowu') // 提示错误
           break
       }
       return response
@@ -31,12 +31,13 @@ export default (type = 'get', url, params) => {
       return reject(error)
     })
     axios(config).then(res => {
-      // if (res.data) reject(res.data)
-      // else resolve(res.data)
-      resolve(res.data)
+      if (res.data.code !== 0) reject(res.data) // 错误，reject
+      else resolve(res.data)
+//       resolve(res.data)
       console.log(1235, res)
     }).catch(data => {
       console.log(963, data)
+      reject(data)
     })
   })
 }
