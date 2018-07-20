@@ -33,8 +33,6 @@ export default (type = 'get', url, params) => {
     axios(config).then(res => {
       if (res.data.code !== 0) reject(res.data) // 错误，reject
       else resolve(res.data)
-//       resolve(res.data)
-      console.log(1235, res)
     }).catch(data => {
       console.log(963, data)
       reject(data)
